@@ -1,176 +1,662 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Cosa ascoltare oggi?</title>
-    <style>
-        body {
-            background-color: #222;
-            background-image:
-                linear-gradient(hsla(212, 85%, 32%, 0),
-                    hsla(212, 85%, 32%, 1),
-                    hsla(212, 85%, 32%, 0),
-                    hsla(212, 85%, 32%, 1),
-                    hsla(212, 85%, 32%, 0)),
-                url("img/bg-hero.png");
-            background-size: cover;
-            transform-style: preserve-3d;
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-            text-align: center;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosa ascoltare oggi?</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .content {
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 80%;
-            width: 100%;
-        }
+body {
+    background: #0a0a12;
+    background-image: radial-gradient(circle at 50% 30%, #1a2a5e 0%, #0a0a12 70%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #fff;
+    overflow-x: hidden;
+    perspective: 1200px;
+}
 
-        h1 {
-            color: white;
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
+.stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
 
-        p {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
+.star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle 3s infinite ease-in-out;
+}
 
-        button {
-            background-color: white;
-            color: blue;
-            font-size: 20px;
-            padding: 10px 20px;
-            margin: 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
 
-        button:hover {
-            background-color: #f0f0f0;
-            transform: scale(1.05);
-        }
+.title-wrap {
+    text-align: center;
+    z-index: 10;
+    margin-bottom: 10px;
+}
 
-        .footer {
-            margin-top: 20px;
-        }
-    </style>
+h1 {
+    font-size: 2.8em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, #00d4ff, #7b2ff7, #ff2e97);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 40px rgba(123, 47, 247, 0.5);
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 1.1em;
+    color: #aab;
+    margin-bottom: 30px;
+}
+
+.scene {
+    width: 380px;
+    height: 260px;
+    position: relative;
+    z-index: 10;
+    margin-bottom: 30px;
+    transform-style: preserve-3d;
+    animation: floatWalkman 6s ease-in-out infinite;
+}
+
+@keyframes floatWalkman {
+    0%, 100% { transform: rotateY(-12deg) rotateX(6deg) translateY(0); }
+    50% { transform: rotateY(12deg) rotateX(-2deg) translateY(-12px); }
+}
+
+.walkman {
+    width: 380px;
+    height: 240px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+}
+
+.walkman-body {
+    position: absolute;
+    width: 380px;
+    height: 240px;
+    background: linear-gradient(145deg, #3a3a45 0%, #1e1e28 100%);
+    border-radius: 18px;
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.15) inset,
+        0 -2px 0 rgba(0,0,0,0.5) inset,
+        0 20px 60px rgba(0,0,0,0.6);
+}
+
+.walkman-body::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    right: 14px;
+    height: 70px;
+    background: linear-gradient(145deg, #2a2a35, #15151c);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5) inset;
+}
+
+.cassette-window {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 50px;
+    background: linear-gradient(145deg, #111, #050505);
+    border-radius: 6px;
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.08) inset,
+        0 -1px 0 rgba(0,0,0,0.8) inset;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    overflow: hidden;
+}
+
+.reel {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #666 30%, #1a1a1a 31%, #2a2a2a 100%);
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.reel::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 10px; height: 10px;
+    background: #888;
+    border-radius: 2px;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.reel::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 4px; height: 4px;
+    background: #111;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.scene.playing .reel {
+    animation: spinReel 1.5s linear infinite;
+}
+
+@keyframes spinReel {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.tape {
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    right: 25%;
+    height: 4px;
+    background: linear-gradient(90deg, #3a2010, #5a3018, #3a2010);
+    transform: translateY(-50%);
+    border-radius: 2px;
+}
+
+.label-area {
+    position: absolute;
+    top: 94px;
+    left: 24px;
+    right: 24px;
+    height: 60px;
+    background: linear-gradient(145deg, #d4a017, #a07012);
+    border-radius: 6px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 2px 6px rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.label-text {
+    font-size: 0.78em;
+    font-weight: 700;
+    color: #2a1a00;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+    word-break: break-word;
+}
+
+.label-text.default {
+    opacity: 0.6;
+    font-style: italic;
+}
+
+.controls {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.ctrl-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #555, #2a2a35);
+    border: none;
+    cursor: pointer;
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.15) inset,
+        0 -1px 0 rgba(0,0,0,0.5) inset,
+        0 3px 6px rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+}
+
+.ctrl-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.1) inset, 0 1px 2px rgba(0,0,0,0.4);
+}
+
+.ctrl-btn.main {
+    width: 46px;
+    height: 46px;
+    background: linear-gradient(145deg, #ff2e97, #7b2ff7);
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.3) inset,
+        0 0 20px rgba(255, 46, 151, 0.4),
+        0 4px 12px rgba(0,0,0,0.5);
+}
+
+.ctrl-icon {
+    width: 0; height: 0;
+    border-style: solid;
+}
+
+.icon-play {
+    border-width: 7px 0 7px 12px;
+    border-color: transparent transparent transparent #fff;
+    margin-left: 3px;
+}
+
+.icon-rewind {
+    border-width: 6px 10px 6px 0;
+    border-color: transparent #ccc transparent transparent;
+}
+
+.icon-forward {
+    border-width: 6px 0 6px 10px;
+    border-color: transparent transparent transparent #ccc;
+}
+
+.icon-stop {
+    width: 12px; height: 12px;
+    border: none;
+    background: #ccc;
+    border-radius: 2px;
+}
+
+.brand {
+    position: absolute;
+    top: 16px;
+    left: 22px;
+    font-size: 0.65em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+}
+
+.led {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #333;
+    transition: all 0.3s ease;
+}
+
+.scene.playing .led {
+    background: #ff2e4f;
+    box-shadow: 0 0 8px #ff2e4f, 0 0 16px rgba(255, 46, 79, 0.5);
+}
+
+.headphone-jack {
+    position: absolute;
+    top: 100px;
+    right: 20px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #0a0a0a;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.1) inset;
+}
+
+.headphones {
+    position: absolute;
+    top: -30px;
+    right: -20px;
+    z-index: 5;
+    transform: rotate(20deg);
+    opacity: 0.85;
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5));
+}
+
+.action-section {
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.generate-btn {
+    background: linear-gradient(135deg, #7b2ff7, #ff2e97);
+    color: #fff;
+    font-size: 1.3em;
+    font-weight: 700;
+    padding: 16px 44px;
+    border: none;
+    cursor: pointer;
+    border-radius: 40px;
+    letter-spacing: 1px;
+    box-shadow:
+        0 0 0 rgba(123, 47, 247, 0.4),
+        0 8px 24px rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.generate-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.generate-btn:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 0 30px rgba(255, 46, 151, 0.5), 0 12px 32px rgba(0,0,0,0.5);
+}
+
+.generate-btn:hover::before {
+    left: 100%;
+}
+
+.generate-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.album-display {
+    margin-top: 10px;
+    min-height: 40px;
+    max-width: 400px;
+}
+
+.album-display .result {
+    font-size: 1.1em;
+    font-weight: 600;
+    background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+}
+
+.album-display .result.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.youtube-link {
+    display: inline-block;
+    margin-top: 12px;
+    color: #ff2e4f;
+    text-decoration: none;
+    font-size: 0.95em;
+    border: 1px solid rgba(255, 46, 79, 0.5);
+    padding: 8px 20px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.youtube-link.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.youtube-link:hover {
+    background: rgba(255, 46, 79, 0.15);
+    box-shadow: 0 0 16px rgba(255, 46, 79, 0.3);
+}
+
+.footer {
+    margin-top: 30px;
+    z-index: 10;
+    text-align: center;
+    color: #555;
+    font-size: 0.85em;
+}
+
+.footer span {
+    color: #7b2ff7;
+    font-weight: 600;
+}
+
+@media (max-width: 480px) {
+    h1 { font-size: 2em; }
+    .scene, .walkman, .walkman-body { width: 300px; }
+    .scene { height: 220px; }
+    .walkman { height: 200px; }
+    .cassette-window { width: 160px; }
+    .generate-btn { font-size: 1.1em; padding: 14px 32px; }
+}
+</style>
 </head>
 <body>
-    <div class="content">
-        <h1>Cosa ascoltare oggi?</h1>
-        <p>Clicca sul pulsante "Ci pensa EL" per ottenere un album da ascoltare.</p>
-        <p>Preparati a essere magicamente trasportato nel mondo della musica con il nostro</p>
-        <button id="generateButton">Ci pensa EL</button>
+
+<div class="stars" id="stars"></div>
+
+<div class="title-wrap">
+    <h1>🎧 Cosa ascoltare oggi?</h1>
+    <p class="subtitle">Lascia che EL scelga un album per te. premi Ci pensa EL.</p>
+</div>
+
+<div class="scene" id="scene">
+    <div class="walkman" id="walkman">
+        <div class="walkman-body">
+            <div class="brand">EL · STEREO</div>
+            <div class="led"></div>
+            <div class="cassette-window">
+                <div class="reel" id="reel1"></div>
+                <div class="tape"></div>
+                <div class="reel" id="reel2"></div>
+            </div>
+            <div class="headphone-jack"></div>
+            <div class="label-area">
+                <div class="label-text default" id="labelText">— Inserisci la cassetta —</div>
+            </div>
+            <div class="controls">
+                <button class="ctrl-btn" aria-label="Rewind"><div class="ctrl-icon icon-rewind"></div></button>
+                <button class="ctrl-btn main" id="playBtn" aria-label="Play"><div class="ctrl-icon icon-play"></div></button>
+                <button class="ctrl-btn" aria-label="Stop"><div class="ctrl-icon icon-stop"></div></button>
+                <button class="ctrl-btn" aria-label="Forward"><div class="ctrl-icon icon-forward"></div></button>
+            </div>
+        </div>
+        <svg class="headphones" width="90" height="80" viewBox="0 0 90 80">
+            <path d="M10 50 Q10 15 45 15 Q80 15 80 50" stroke="#3a3a45" stroke-width="4" fill="none"/>
+            <rect x="4" y="46" width="14" height="24" rx="4" fill="#2a2a35"/>
+            <rect x="72" y="46" width="14" height="24" rx="4" fill="#2a2a35"/>
+            <rect x="6" y="50" width="10" height="16" rx="3" fill="#555"/>
+            <rect x="74" y="50" width="10" height="16" rx="3" fill="#555"/>
+        </svg>
     </div>
+</div>
 
-    <div class="footer">
-        <p>Realizzato da ELpythonEMI</p>
+<div class="action-section">
+    <button class="generate-btn" id="generateButton">Ci pensa EL</button>
+    <div class="album-display">
+        <div class="result" id="result"></div>
+        <a href="#" class="youtube-link" id="ytLink" target="_blank">▶ Ascolta su YouTube</a>
     </div>
+</div>
 
-    <script>
-        var albums = [
-            "Pink Floyd - The Dark Side of the Moon",
-            "Led Zeppelin - IV",
-            "The Rolling Stones - Exile on Main St.",
-            "The Who - Who's Next ",
-            "Queen - A Night at the Opera",
-            "The Eagles - Hotel California",
-            "The Doors - L.A. Woman",
-            "David Bowie - The Rise and Fall of Ziggy Stardust and the Spiders from Mars ",
-            "Neil Young - Harvest",
-            "Fleetwood Mac - Rumours ",
-            "Aerosmith - Toys in the Attic",
-            "Pink Floyd - Wish You Were Here",
-            "Bob Dylan - Blood on the Tracks",
-            "Deep Purple - Machine Head",
-            "Queen - Sheer Heart Attack",
-            "The Allman Brothers Band - At Fillmore East",
-            "AC/DC - High Voltage",
-            "Black Sabbath - Paranoid",
-            "Elton John - Goodbye Yellow Brick Road",
-            "Bruce Springsteen - Born to Run",
-            "Genesis - The Lamb Lies Down on Broadway",
-            "Jimi Hendrix - Axis: Bold as Love",
-            "Jethro Tull - Aqualung",
-            "Van Morrison - Moondance",
-            "Yes - Fragile",
-            "The Clash - London Calling",
-            "Emerson, Lake & Palmer - Brain Salad Surgery",
-            "Supertramp - Breakfast in America",
-            "The Ramones - Ramones",
-            "Judas Priest - British Steel",
-            "Blind Guardian - Battalions of Fear",
-            "Rush - 2112",
-            "MOTÖRHEAD - ACE OF SPADES",
-            "SAXON - DENIM AND LEATHER",
-            "DEF LEPPARD - PYROMANIA",
-            "SLAYER - SOUTH OF HEAVEN",
-            "KISS - LOVE GUN",
-            "RAINBOW - LONG LIVE ROCK 'N' ROLL",
-            "MEGADETH - KILLING IS MY BUSINESS... AND BUSINESS IS GOOD",
-            "THIN LIZZY - BAD REPUTATION",
-            "VENOM - BLACK METAL VENOM",
-            "QUEENSRŸCHE - THE WARNING ",
-            "BLUE ÖYSTER CULT - AGENTS OF FORTUNE",
-            "URIAH HEEP - DEMONS AND WIZARDS",
-            "QUIET RIOT - METAL HEALTH",
-            "SUICIDAL TENDENCIES - LIGHTS CAMERA REVOLUTION",
-            "YNGWIE MALMSTEEN - TRILOGY ",
-            "SLAYER - SEASONS IN THE ABYSS",
-            "HELLOWEEN - WALLS OF JERICHO",
-            "MOTÖRHEAD - 1916",
-            "L.A. GUNS - L.A. GUNS",
-            "JUDAS PRIEST - DEFENDERS OF THE FAITH",
-            "MEGADETH - RUST IN PEACE",
-            "ANTHRAX STATE OF EUPHORIA",
-            "RAINBOW - RISING",
-            "Vasco Rossi - Bollicine",
-            "Ligabue - Buon Compleanno Elvis",
-            "Pino Daniele - Nero a Metà ",
-            "Afterhours - Hai Paura del Buio?",
-            "Subsonica - Microchip Emozionale",
-            "Verdena - Solo un Grande Sasso",
-            "CCCP - Fedeli Alla Linea",
-            "Litfiba - El Diablo",
-            "Litfiba - Mondi Sommersi",
-            "Franco Battiato - La Voce del Padrone",
-            "Bluvertigo - Zero",
-            "Il Rovescio della Medaglia - Contaminazione",
-            "Negrita - Mama Maè ",
-            "Marlene Kuntz - Il Vile",
-        ];
+<div class="footer">
+    <p>Realizzato da <span>ELpythonEMI</span></p>
+</div>
 
-       
-        function getRandomIndex() {
-            return Math.floor(Math.random() * albums.length);
+<script>
+var albums = [
+    "Pink Floyd - The Dark Side of the Moon",
+    "Led Zeppelin - IV",
+    "The Rolling Stones - Exile on Main St.",
+    "The Who - Who's Next",
+    "Queen - A Night at the Opera",
+    "The Eagles - Hotel California",
+    "The Doors - L.A. Woman",
+    "David Bowie - The Rise and Fall of Ziggy Stardust and the Spiders from Mars",
+    "Neil Young - Harvest",
+    "Fleetwood Mac - Rumours",
+    "Aerosmith - Toys in the Attic",
+    "Pink Floyd - Wish You Were Here",
+    "Bob Dylan - Blood on the Tracks",
+    "Deep Purple - Machine Head",
+    "Queen - Sheer Heart Attack",
+    "The Allman Brothers Band - At Fillmore East",
+    "AC/DC - High Voltage",
+    "Black Sabbath - Paranoid",
+    "Elton John - Goodbye Yellow Brick Road",
+    "Bruce Springsteen - Born to Run",
+    "Genesis - The Lamb Lies Down on Broadway",
+    "Jimi Hendrix - Axis: Bold as Love",
+    "Jethro Tull - Aqualung",
+    "Van Morrison - Moondance",
+    "Yes - Fragile",
+    "The Clash - London Calling",
+    "Emerson, Lake & Palmer - Brain Salad Surgery",
+    "Supertramp - Breakfast in America",
+    "The Ramones - Ramones",
+    "Judas Priest - British Steel",
+    "Blind Guardian - Battalions of Fear",
+    "Rush - 2112",
+    "MOTÖRHEAD - ACE OF SPADES",
+    "SAXON - DENIM AND LEATHER",
+    "DEF LEPPARD - PYROMANIA",
+    "SLAYER - SOUTH OF HEAVEN",
+    "KISS - LOVE GUN",
+    "RAINBOW - LONG LIVE ROCK 'N' ROLL",
+    "MEGADETH - KILLING IS MY BUSINESS... AND BUSINESS IS GOOD",
+    "THIN LIZZY - BAD REPUTATION",
+    "VENOM - BLACK METAL VENOM",
+    "QUEENSRŸCHE - THE WARNING",
+    "BLUE ÖYSTER CULT - AGENTS OF FORTUNE",
+    "URIAH HEEP - DEMONS AND WIZARDS",
+    "QUIET RIOT - METAL HEALTH",
+    "SUICIDAL TENDENCIES - LIGHTS CAMERA REVOLUTION",
+    "YNGWIE MALMSTEEN - TRILOGY",
+    "SLAYER - SEASONS IN THE ABYSS",
+    "HELLOWEEN - WALLS OF JERICHO",
+    "MOTÖRHEAD - 1916",
+    "L.A. GUNS - L.A. GUNS",
+    "JUDAS PRIEST - DEFENDERS OF THE FAITH",
+    "MEGADETH - RUST IN PEACE",
+    "ANTHRAX - STATE OF EUPHORIA",
+    "RAINBOW - RISING",
+    "Vasco Rossi - Bollicine",
+    "Ligabue - Buon Compleanno Elvis",
+    "Pino Daniele - Nero a Metà",
+    "Afterhours - Hai Paura del Buio?",
+    "Subsonica - Microchip Emozionale",
+    "Verdena - Solo un Grande Sasso",
+    "CCCP - Fedeli Alla Linea",
+    "Litfiba - El Diablo",
+    "Litfiba - Mondi Sommersi",
+    "Franco Battiato - La Voce del Padrone",
+    "Bluvertigo - Zero",
+    "Il Rovescio della Medaglia - Contaminazione",
+    "Negrita - Mama Maè",
+    "Marlene Kuntz - Il Vile"
+];
+
+var scene = document.getElementById('scene');
+var labelText = document.getElementById('labelText');
+var result = document.getElementById('result');
+var ytLink = document.getElementById('ytLink');
+var generateButton = document.getElementById('generateButton');
+var playBtn = document.getElementById('playBtn');
+
+function createStars() {
+    var container = document.getElementById('stars');
+    for (var i = 0; i < 60; i++) {
+        var star = document.createElement('div');
+        star.className = 'star';
+        var size = Math.random() * 2 + 1;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        container.appendChild(star);
+    }
+}
+createStars();
+
+function pickAlbum() {
+    var idx = Math.floor(Math.random() * albums.length);
+    return albums[idx];
+}
+
+function typeWriter(el, text, speed, cb) {
+    el.textContent = '';
+    el.classList.remove('default');
+    var i = 0;
+    function step() {
+        if (i < text.length) {
+            el.textContent += text.charAt(i);
+            i++;
+            setTimeout(step, speed);
+        } else if (cb) {
+            cb();
         }
+    }
+    step();
+}
 
-       
-        function generateYouTubeLink() {
-            var randomIndex = getRandomIndex();
-            var album = albums[randomIndex];
-            var searchQuery = album + " full album";
-            var youtubeLink = "https://www.youtube.com/results?search_query=" + encodeURIComponent(searchQuery);
-            window.open(youtubeLink, "_blank");
-        }
+generateButton.addEventListener('click', function() {
+    var album = pickAlbum();
+    scene.classList.add('playing');
 
-      
-        var generateButton = document.getElementById("generateButton");
-        generateButton.addEventListener("click", generateYouTubeLink);
-    </script>
+    typeWriter(labelText, album, 25);
+
+    result.classList.remove('show');
+    ytLink.classList.remove('show');
+
+    setTimeout(function() {
+        result.textContent = '🎵 ' + album;
+        result.classList.add('show');
+
+        var searchQuery = album + ' full album';
+        var youtubeLink = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(searchQuery);
+        ytLink.href = youtubeLink;
+        ytLink.classList.add('show');
+    }, 800);
+});
+
+playBtn.addEventListener('click', function() {
+    scene.classList.toggle('playing');
+    if (scene.classList.contains('playing')) {
+        playBtn.innerHTML = '<div class="ctrl-icon icon-stop"></div>';
+    } else {
+        playBtn.innerHTML = '<div class="ctrl-icon icon-play"></div>';
+    }
+});
+
+scene.addEventListener('mousemove', function(e) {
+    var rect = scene.getBoundingClientRect();
+    var x = (e.clientX - rect.left) / rect.width - 0.5;
+    var y = (e.clientY - rect.top) / rect.height - 0.5;
+    var walkman = document.getElementById('walkman');
+    walkman.style.transform = 'rotateY(' + (x * 25) + 'deg) rotateX(' + (-y * 20) + 'deg)';
+});
+
+scene.addEventListener('mouseleave', function() {
+    document.getElementById('walkman').style.transform = '';
+});
+</script>
 </body>
 </html>
